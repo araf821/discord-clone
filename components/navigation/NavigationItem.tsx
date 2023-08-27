@@ -32,12 +32,17 @@ const NavigationItem: FC<NavigationItemProps> = ({ id, imageUrl, name }) => {
         />
         <div
           className={cn(
-            "group relative mx-3 flex h-12 w-12 overflow-hidden rounded-full transition-all group-hover:rounded-[16px]",
+            "relative mx-3 flex h-12 w-12 overflow-hidden rounded-[24px] transition-all group-hover:rounded-[16px]",
             params?.serverId === id &&
               "rounded-[16px] bg-primary/10 text-primary",
           )}
         >
-          <Image fill alt="server image" src={imageUrl} className="" />
+          <Image
+            fill
+            alt="server image"
+            src={imageUrl}
+            className="object-cover"
+          />
         </div>
       </button>
     </ActionTooltip>
