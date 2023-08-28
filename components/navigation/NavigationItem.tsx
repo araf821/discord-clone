@@ -25,7 +25,7 @@ const NavigationItem: FC<NavigationItemProps> = ({ id, imageUrl, name }) => {
       <button onClick={onClick} className="group relative flex items-center">
         <div
           className={cn(
-            "absolute left-0 w-1 rounded-r-full bg-primary transition-all",
+            "absolute left-0 w-[4px] rounded-r-full bg-primary transition-all",
             params?.serverId !== id && "group-hover:h-5",
             params?.serverId === id ? "h-9" : "h-2",
           )}
