@@ -60,7 +60,10 @@ const ServerHeader: FC<ServerHeaderProps> = ({ role, server }) => {
           </DropdownMenuItem>
         ) : null}
         {isAdmin ? (
-          <DropdownMenuItem className="cursor-pointer px-3 py-2 text-sm">
+          <DropdownMenuItem
+            onClick={() => open("members", { server })}
+            className="cursor-pointer px-3 py-2 text-sm"
+          >
             Manage Members
             <Users className="ml-auto h-4 w-4" />
           </DropdownMenuItem>
