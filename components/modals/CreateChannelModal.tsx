@@ -77,7 +77,7 @@ const CreateChannelModal: FC<CreateChannelModalProps> = ({}) => {
           serverId: params?.serverId,
         },
       });
-      await axios.post("/api/channels/create", values);
+      await axios.post(url, values);
 
       form.reset();
       router.refresh();
