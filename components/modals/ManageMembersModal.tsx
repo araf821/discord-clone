@@ -56,7 +56,29 @@ const ManageMembersModal: FC<ManageMembersModalProps> = ({}) => {
 
   const { server } = data as { server: ServerWithMembersAndProfiles };
 
-  const onRoleChange = async (memberId: string, role: MemberRole) => {
+  const kickMember = async (memberId: string) => {
+    try {
+      setLoadingId(memberId);
+
+      const url = qs.stringifyUrl({
+        url: `/api/members/${memberId}`,
+        query: {
+          serverId: server?.id,
+        },
+      });
+
+      const response = await axios.delete(url);
+
+      router.refresh();
+      open("members", { server: response.data });
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoadingId("");
+    }
+  };
+
+  const changeRole = async (memberId: string, role: MemberRole) => {
     try {
       setLoadingId(memberId);
 
@@ -114,7 +136,9 @@ const ManageMembersModal: FC<ManageMembersModalProps> = ({}) => {
                           </DropdownMenuSubTrigger>
                           <DropdownMenuPortal>
                             <DropdownMenuSubContent>
-                              <DropdownMenuItem onClick={() => onRoleChange(member.id, "MEMBER")}>
+                              <DropdownMenuItem
+                                onClick={() => changeRole(member.id, "MEMBER")}
+                              >
                                 <Shield className="mr-2 h-4 w-4" />
                                 Member
                                 {member.role === "MEMBER" && (
@@ -122,7 +146,11 @@ const ManageMembersModal: FC<ManageMembersModalProps> = ({}) => {
                                 )}
                               </DropdownMenuItem>
 
-                              <DropdownMenuItem onClick={() => onRoleChange(member.id, 'MODERATOR')}>
+                              <DropdownMenuItem
+                                onClick={() =>
+                                  changeRole(member.id, "MODERATOR")
+                                }
+                              >
                                 <ShieldCheck className="mr-2 h-4 w-4" />
                                 Moderator
                                 {member.role === "MODERATOR" && (
@@ -133,7 +161,7 @@ const ManageMembersModal: FC<ManageMembersModalProps> = ({}) => {
                           </DropdownMenuPortal>
                         </DropdownMenuSub>
                         <DropdownMenuSeparator />
-                        <DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => kickMember(member.id)}>
                           <Gavel className="mr-2 h-4 w-4" />
                           Kick
                         </DropdownMenuItem>
