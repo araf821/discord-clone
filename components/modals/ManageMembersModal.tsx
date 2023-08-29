@@ -1,6 +1,7 @@
 "use client";
 
 import { FC, useState } from "react";
+import qs from "query-string";
 
 import {
   Dialog,
@@ -34,6 +35,9 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "../ui/DropdownMenu";
+import { MemberRole } from "@prisma/client";
+import axios from "axios";
+import { useRouter } from "next/navigation";
 
 interface ManageMembersModalProps {}
 
@@ -44,12 +48,34 @@ const roleIconMap = {
 };
 
 const ManageMembersModal: FC<ManageMembersModalProps> = ({}) => {
+  const router = useRouter();
   const { isOpen, close, type, open, data } = useModal();
   const [loadingId, setLoadingId] = useState("");
 
   const isModalOpen = isOpen && type === "members";
 
   const { server } = data as { server: ServerWithMembersAndProfiles };
+
+  const onRoleChange = async (memberId: string, role: MemberRole) => {
+    try {
+      setLoadingId(memberId);
+
+      const url = qs.stringifyUrl({
+        url: `/api/members/${memberId}`,
+        query: {
+          serverId: server?.id,
+        },
+      });
+
+      const response = await axios.patch(url, { role });
+      router.refresh();
+      open("members", { server: response.data });
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoadingId("");
+    }
+  };
 
   return (
     <Dialog open={isModalOpen} onOpenChange={close}>
@@ -88,7 +114,7 @@ const ManageMembersModal: FC<ManageMembersModalProps> = ({}) => {
                           </DropdownMenuSubTrigger>
                           <DropdownMenuPortal>
                             <DropdownMenuSubContent>
-                              <DropdownMenuItem>
+                              <DropdownMenuItem onClick={() => onRoleChange(member.id, "MEMBER")}>
                                 <Shield className="mr-2 h-4 w-4" />
                                 Member
                                 {member.role === "MEMBER" && (
@@ -96,7 +122,7 @@ const ManageMembersModal: FC<ManageMembersModalProps> = ({}) => {
                                 )}
                               </DropdownMenuItem>
 
-                              <DropdownMenuItem>
+                              <DropdownMenuItem onClick={() => onRoleChange(member.id, 'MODERATOR')}>
                                 <ShieldCheck className="mr-2 h-4 w-4" />
                                 Moderator
                                 {member.role === "MODERATOR" && (

@@ -40,7 +40,7 @@ const ServerHeader: FC<ServerHeaderProps> = ({ role, server }) => {
           <ChevronDown className="ml-auto h-5 w-5" />
         </button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-56 space-y-0.5 bg-zinc-900 p-1 text-sm font-medium text-black dark:text-neutral-400">
+      <DropdownMenuContent className="w-56 space-y-0.5 bg-gray-50 p-1 text-sm font-medium text-black dark:bg-zinc-900 dark:text-neutral-400">
         {isModerator ? (
           <DropdownMenuItem
             onClick={() => open("invite", { server })}
