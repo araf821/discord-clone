@@ -41,7 +41,7 @@ const ServerSection: FC<ServerSectionProps> = ({
       )}
 
       {role === "ADMIN" && sectionType === "members" && (
-        <ActionTooltip label="Create Channel" side="top">
+        <ActionTooltip label="Manage Members" side="top">
           <button
             onClick={() => open("members", { server })}
             className="text-zinc-500 transition hover:text-zinc-600 dark:text-zinc-400 hover:dark:text-zinc-300"
