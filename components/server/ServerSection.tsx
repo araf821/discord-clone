@@ -32,7 +32,7 @@ const ServerSection: FC<ServerSectionProps> = ({
       {role !== "MEMBER" && sectionType === "channels" && (
         <ActionTooltip label="Create Channel" side="top">
           <button
-            onClick={() => open("createChannel")}
+            onClick={() => open("createChannel", { channelType })}
             className="text-zinc-500 transition hover:text-zinc-600 dark:text-zinc-400 hover:dark:text-zinc-300"
           >
             <Plus className="h-4 w-4" />
