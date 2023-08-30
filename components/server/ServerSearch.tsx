@@ -10,6 +10,7 @@ import {
   CommandItem,
   CommandList,
 } from "../ui/Command";
+import { useParams, useRouter } from "next/navigation";
 
 interface ServerSearchProps {
   data: {
@@ -27,6 +28,8 @@ interface ServerSearchProps {
 
 const ServerSearch: FC<ServerSearchProps> = ({ data }) => {
   const [open, setOpen] = useState(false);
+  const router = useRouter();
+  const params = useParams();
 
   useEffect(() => {
     const down = (e: KeyboardEvent) => {
@@ -39,6 +42,24 @@ const ServerSearch: FC<ServerSearchProps> = ({ data }) => {
     document.addEventListener("keydown", down);
     return () => document.removeEventListener("keydown", down);
   }, []);
+
+  const onClick = ({
+    id,
+    type,
+  }: {
+    id: string;
+    type: "channel" | "member";
+  }) => {
+    setOpen(false);
+
+    if (type === "member") {
+      return router.push(`/server/${params?.serverId}/conversations/${id}}`);
+    }
+
+    if (type === "channel") {
+      return router.push(`/server/${params?.serverId}/channels/${id}`);
+    }
+  };
 
   return (
     <>
@@ -66,7 +87,10 @@ const ServerSearch: FC<ServerSearchProps> = ({ data }) => {
               <CommandGroup heading={label} key={label}>
                 {data.map(({ id, icon, name }) => {
                   return (
-                    <CommandItem key={id}>
+                    <CommandItem
+                      key={id}
+                      onSelect={() => onClick({ id, type })}
+                    >
                       {icon}
                       <span>{name}</span>
                     </CommandItem>
