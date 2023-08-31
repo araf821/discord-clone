@@ -37,10 +37,10 @@ const ServerHeader: FC<ServerHeaderProps> = ({ role, server }) => {
       <DropdownMenuTrigger className="focus:outline-none" asChild>
         <button className="text-md flex h-12 w-full items-center border-b-2 border-neutral-200 px-3 font-semibold transition hover:bg-zinc-700/10 dark:border-neutral-800 dark:hover:bg-zinc-700/50">
           {server.name}
-          <ChevronDown className="ml-auto h-5 w-5" />
+          <ChevronDown className="md:ml-auto h-5 ml- w-5" />
         </button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-56 space-y-0.5 bg-gray-50 p-1 text-sm font-medium text-black dark:bg-zinc-900 dark:text-neutral-400">
+      <DropdownMenuContent className="w-56 z-30 space-y-0.5 bg-gray-50 p-1 text-sm font-medium text-black dark:bg-zinc-900 dark:text-neutral-400">
         {isModerator ? (
           <DropdownMenuItem
             onClick={() => open("invite", { server })}

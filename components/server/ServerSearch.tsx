@@ -39,7 +39,9 @@ const ServerSearch: FC<ServerSearchProps> = ({ data }) => {
       }
     };
 
+    //@ts-ignore
     document.addEventListener("keydown", down);
+    //@ts-ignore
     return () => document.removeEventListener("keydown", down);
   }, []);
 
@@ -53,11 +55,11 @@ const ServerSearch: FC<ServerSearchProps> = ({ data }) => {
     setOpen(false);
 
     if (type === "member") {
-      return router.push(`/server/${params?.serverId}/conversations/${id}}`);
+      return router.push(`/server/${params?.serverId}/chat/${id}}`);
     }
 
     if (type === "channel") {
-      return router.push(`/server/${params?.serverId}/channels/${id}`);
+      return router.push(`/server/${params?.serverId}/channel/${id}`);
     }
   };
 
