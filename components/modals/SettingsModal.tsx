@@ -1,6 +1,6 @@
 "use client";
 
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect } from "react";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
@@ -8,7 +8,6 @@ import axios from "axios";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
@@ -24,102 +23,91 @@ import {
 import { useForm } from "react-hook-form";
 import { Input } from "../ui/Input";
 import { Button } from "../ui/Button";
-import FileUpload from "../FileUpload";
 import { useRouter } from "next/navigation";
-import { UserButton } from "@clerk/nextjs";
-
-interface InitialModalProps {}
+import { useModal } from "@/hooks/use-modal-store";
+import qs from "query-string";
 
 const formSchema = z.object({
   name: z
     .string()
-    .min(3, {
-      message: "Server name must be between 3 and 32 characters long.",
+    .min(2, {
+      message: "Name must be between 2 and 21 characters long.",
     })
     .max(32, {
-      message: "Server name must be between 3 and 32 characters long.",
+      message: "Name must be between 2 and 21 characters long.",
     }),
-  imageUrl: z.string().min(3, { message: "Server image url is required." }),
 });
 
-const InitialModal: FC<InitialModalProps> = ({}) => {
-  const [isMounted, setIsMounted] = useState(false);
+const SettingsModal = () => {
+  const { isOpen, close, type, data } = useModal();
   const router = useRouter();
 
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
+  const isModalOpen = isOpen && type === "settings";
+  const { profile } = data;
 
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
-      imageUrl: "",
     },
   });
+
+  useEffect(() => {
+    if (profile) {
+      form.setValue("name", profile.name);
+    }
+  }, [form, profile]);
 
   const isLoading = form.formState.isSubmitting;
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      await axios.post("/api/servers/create", values);
+      const url = qs.stringifyUrl({
+        url: `/api/settings`,
+        query: {
+          profileId: profile?.id,
+        },
+      });
+      await axios.patch(url, values);
 
       form.reset();
       router.refresh();
+      close();
       window.location.reload();
     } catch (error) {
       console.log(error);
     }
   };
 
-  if (!isMounted) return null;
+  const handleClose = () => {
+    form.reset();
+    close();
+  };
 
   return (
-    <Dialog open>
+    <Dialog open={isModalOpen} onOpenChange={handleClose}>
       <DialogContent className="overflow-hidden bg-white p-0 text-black">
         <DialogHeader className="px-6 pt-8">
           <DialogTitle className="text-center text-2xl font-bold">
-            Customize your server
+            Settings
           </DialogTitle>
-          <DialogDescription className="text-center text-zinc-500">
-            Give your server a personality with a name and an image. You can
-            always change these later.
-          </DialogDescription>
         </DialogHeader>
         <Form {...form}>
           <form className="space-y-8" onSubmit={form.handleSubmit(onSubmit)}>
             <div className="space-y-8 px-6">
-              <div className="flex items-center justify-center text-center">
-                <FormField
-                  control={form.control}
-                  name="imageUrl"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormControl>
-                        <FileUpload
-                          endPoint="serverImage"
-                          value={field.value}
-                          onChange={field.onChange}
-                        />
-                      </FormControl>
-                    </FormItem>
-                  )}
-                />
-              </div>
-
               <FormField
                 control={form.control}
                 name="name"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="text-xs font-bold uppercase text-zinc-500 dark:text-secondary/70">
-                      Server name
+                      Change Your Name
                     </FormLabel>
                     <FormControl>
                       <Input
                         disabled={isLoading}
                         className="border-0 bg-zinc-300/50 text-black focus-visible:ring-0 focus-visible:ring-offset-0"
-                        placeholder="Enter server name"
+                        placeholder="Your name"
                         {...field}
                       />
                     </FormControl>
@@ -129,10 +117,9 @@ const InitialModal: FC<InitialModalProps> = ({}) => {
               />
             </div>
 
-            <DialogFooter className="w-full items-center bg-gray-100 px-6 py-4 sm:justify-between">
-              <UserButton afterSignOutUrl="/" />
+            <DialogFooter className="bg-gray-100 px-6 py-4">
               <Button disabled={isLoading} variant="primary">
-                Create
+                Save
               </Button>
             </DialogFooter>
           </form>
@@ -142,4 +129,4 @@ const InitialModal: FC<InitialModalProps> = ({}) => {
   );
 };
 
-export default InitialModal;
+export default SettingsModal;

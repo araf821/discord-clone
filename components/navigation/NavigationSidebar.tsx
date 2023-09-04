@@ -8,6 +8,7 @@ import { ScrollArea } from "../ui/ScrollArea";
 import NavigationItem from "./NavigationItem";
 import { ModeToggle } from "../ModeToggle";
 import { UserButton } from "@clerk/nextjs";
+import SettingsButton from "../SettingsButton";
 
 interface NavigationSidebarProps {}
 
@@ -29,7 +30,7 @@ const NavigationSidebar: FC<NavigationSidebarProps> = async ({}) => {
   });
 
   return (
-    <div className="flex h-full w-full flex-col items-center space-y-4 py-3 text-primary dark:bg-[#1e1f22] bg-[#E3E5E8]">
+    <div className="flex h-full w-full flex-col items-center space-y-4 bg-[#E3E5E8] py-3 text-primary dark:bg-[#1e1f22]">
       <NavigationAction />
       <Separator className="mx-auto h-[2px] w-12 rounded-md bg-zinc-300 dark:bg-zinc-700" />
 
@@ -47,6 +48,7 @@ const NavigationSidebar: FC<NavigationSidebarProps> = async ({}) => {
 
       <div className="mt-auto flex flex-col items-center gap-y-4 pb-3">
         <ModeToggle />
+        <SettingsButton profile={profile} />
         <UserButton
           afterSignOutUrl="/"
           appearance={{
