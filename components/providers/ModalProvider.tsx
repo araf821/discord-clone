@@ -7,7 +7,7 @@ import EditServerModal from "../modals/EditServerModal";
 import ManageMembersModal from "../modals/ManageMembersModal";
 import CreateChannelModal from "../modals/CreateChannelModal";
 import LeaveServerModal from "../modals/LeaveServerModal";
-import DeleteServerModal from "../modals/DeleteChannelModal";
+import DeleteServerModal from "../modals/DeleteServerModal";
 import DeleteChannelModal from "../modals/DeleteChannelModal";
 import EditChannelModal from "../modals/EditChannelModal";
 import MessageFileModal from "../modals/MessageFileModal";

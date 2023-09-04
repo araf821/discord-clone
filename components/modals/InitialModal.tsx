@@ -26,6 +26,7 @@ import { Input } from "../ui/Input";
 import { Button } from "../ui/Button";
 import FileUpload from "../FileUpload";
 import { useRouter } from "next/navigation";
+import { UserButton } from "@clerk/nextjs";
 
 interface InitialModalProps {}
 
@@ -128,7 +129,8 @@ const InitialModal: FC<InitialModalProps> = ({}) => {
               />
             </div>
 
-            <DialogFooter className="bg-gray-100 px-6 py-4">
+            <DialogFooter className="w-full sm:justify-between items-center bg-gray-100 px-6 py-4">
+              <UserButton />
               <Button disabled={isLoading} variant="primary">
                 Create
               </Button>

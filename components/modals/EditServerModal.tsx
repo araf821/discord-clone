@@ -88,7 +88,7 @@ const EditServerModal: FC<EditServerModalProps> = ({}) => {
       <DialogContent className="overflow-hidden bg-white p-0 text-black">
         <DialogHeader className="px-6 pt-8">
           <DialogTitle className="text-center text-2xl font-bold">
-            Customize your server
+            Customize Your Server
           </DialogTitle>
           <DialogDescription className="text-center text-zinc-500">
             Give your server a personality with a name and an image. You can

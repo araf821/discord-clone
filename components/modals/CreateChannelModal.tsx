@@ -106,7 +106,7 @@ const CreateChannelModal: FC<CreateChannelModalProps> = ({}) => {
       <DialogContent className="overflow-hidden bg-white p-0 text-black">
         <DialogHeader className="px-6 pt-8">
           <DialogTitle className="text-center text-2xl font-bold">
-            Create channel
+            Create Channel
           </DialogTitle>
         </DialogHeader>
         <Form {...form}>
