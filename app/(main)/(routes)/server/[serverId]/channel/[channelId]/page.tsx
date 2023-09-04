@@ -1,3 +1,4 @@
+import MediaRoom from "@/components/MediaRoom";
 import ChatHeader from "@/components/chat/ChatHeader";
 import ChatInput from "@/components/chat/ChatInput";
 import ChatMessages from "@/components/chat/ChatMessages";
@@ -45,29 +46,41 @@ const ChannelPage: FC<ChannelPageProps> = async ({ params }) => {
         serverId={channel.serverId}
         type="channel"
       />
-      <ChatMessages
-        member={member}
-        name={channel.name}
-        type="channel"
-        apiUrl="/api/messages"
-        socketUrl="/api/socket/messages"
-        socketQuery={{
-          channelId: channel.id,
-          serverId: channel.serverId,
-        }}
-        paramKey="channelId"
-        chatId={channel.id}
-        paramValue={channel.id}
-      />
-      <ChatInput
-        name={channel.name}
-        type="channel"
-        apiUrl="/api/socket/messages"
-        query={{
-          channelId: channel.id,
-          serverId: channel.serverId,
-        }}
-      />
+      {channel.type === "TEXT" && (
+        <>
+          <ChatMessages
+            member={member}
+            name={channel.name}
+            type="channel"
+            apiUrl="/api/messages"
+            socketUrl="/api/socket/messages"
+            socketQuery={{
+              channelId: channel.id,
+              serverId: channel.serverId,
+            }}
+            paramKey="channelId"
+            chatId={channel.id}
+            paramValue={channel.id}
+          />
+          <ChatInput
+            name={channel.name}
+            type="channel"
+            apiUrl="/api/socket/messages"
+            query={{
+              channelId: channel.id,
+              serverId: channel.serverId,
+            }}
+          />
+        </>
+      )}
+
+      {channel.type === "AUDIO" && (
+        <MediaRoom chatId={channel.id} audio={true} video={false} />
+      )}
+
+      {channel.type === "VIDEO" && (
+        <MediaRoom chatId={channel.id} audio={false} video={true} />
+      )}
     </div>
   );
 };
