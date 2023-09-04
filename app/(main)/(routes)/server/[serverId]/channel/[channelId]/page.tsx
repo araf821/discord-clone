@@ -79,7 +79,7 @@ const ChannelPage: FC<ChannelPageProps> = async ({ params }) => {
       )}
 
       {channel.type === "VIDEO" && (
-        <MediaRoom chatId={channel.id} audio={false} video={true} />
+        <MediaRoom chatId={channel.id} audio={true} video={true} />
       )}
     </div>
   );

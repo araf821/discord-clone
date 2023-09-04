@@ -31,7 +31,7 @@ const MediaRoom: FC<MediaRoomProps> = ({ audio, chatId, video }) => {
         const data = await response.json();
         setToken(data.token);
       } catch (error) {
-        console.log("ERROR: ",error);
+        console.log("ERROR: ", error);
       }
     })();
   }, [user?.firstName, user?.lastName, chatId]);
@@ -49,7 +49,7 @@ const MediaRoom: FC<MediaRoomProps> = ({ audio, chatId, video }) => {
     <LiveKitRoom
       data-lk-theme="default"
       serverUrl={process.env.NEXT_PUBLIC_LIVEKIT_URL}
-      token="token"
+      token={token}
       connect={true}
       video={video}
       audio={audio}
